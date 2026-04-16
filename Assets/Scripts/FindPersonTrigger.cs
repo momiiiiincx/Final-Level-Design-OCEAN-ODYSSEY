@@ -1,16 +1,17 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
+// ใส่ที่ตัว Mechanic (ช่าง)
 public class FindPersonTrigger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (other.CompareTag("Player"))
+        {
+            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            if (qm != null && qm.questPhase == 2) qm.foundMechanic = true;
+        }
     }
 }
+
+
