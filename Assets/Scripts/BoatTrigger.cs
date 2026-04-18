@@ -2,6 +2,8 @@
 using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; // ต้องมีตัวนี้เพื่อใช้ Image
 
 public class BoatTrigger : MonoBehaviour
 {
@@ -9,6 +11,11 @@ public class BoatTrigger : MonoBehaviour
     public GameObject interactionPrompt;
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
+
+    [Header("Fade Settings")]
+    public Image fadeImage; // เปลี่ยนจาก CanvasGroup เป็น Image
+    public float fadeDuration = 1.5f;
+    public string nextSceneName = "NextSceneName";
 
     [Header("Settings")]
     public float typingSpeed = 0.05f;
@@ -20,6 +27,14 @@ public class BoatTrigger : MonoBehaviour
     {
         if (interactionPrompt != null) interactionPrompt.SetActive(false);
         if (dialoguePanel != null) dialoguePanel.SetActive(false);
+
+        // เริ่มต้นให้ Image สีดำโปร่งแสง (Alpha = 0)
+        if (fadeImage != null)
+        {
+            Color c = fadeImage.color;
+            c.a = 0;
+            fadeImage.color = c;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -29,7 +44,9 @@ public class BoatTrigger : MonoBehaviour
             isPlayerAtBoat = true;
             QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
             if (qm != null && qm.questPhase == 3 && !isMessageShown)
+            {
                 if (interactionPrompt != null) interactionPrompt.SetActive(true);
+            }
         }
     }
 
@@ -46,29 +63,15 @@ public class BoatTrigger : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame)
+        if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame && !isMessageShown)
         {
-            Debug.Log("กด E ที่เรือแล้ว!"); // เช็คว่าปุ่มทำงานไหม
-
             QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
-            if (qm == null)
-            {
-                Debug.LogError("หา QuestManager ไม่เจอในฉาก!");
-                return;
-            }
-
-            Debug.Log("ปัจจุบันอยู่ใน Phase: " + qm.questPhase); // เช็คว่า Phase ตรงไหม
-
-            if (qm.questPhase == 3 && !isMessageShown)
+            if (qm != null && qm.questPhase == 3)
             {
                 if (dialoguePanel != null && dialogueText != null)
                 {
                     ShowDialogue();
                     qm.questFinished = true;
-                }
-                else
-                {
-                    Debug.LogError("ลืมลาก DialoguePanel หรือ Text ใส่ในสคริปต์ที่ตัวเรือครับ!");
                 }
             }
         }
@@ -90,5 +93,36 @@ public class BoatTrigger : MonoBehaviour
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
+
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(FadeAndChangeScene());
+    }
+
+    IEnumerator FadeAndChangeScene()
+    {
+        if (fadeImage == null)
+        {
+            Debug.LogError("ลืมลาก Image สีดำมาใส่ในช่อง Fade Image นะครับ!");
+            yield break;
+        }
+
+        float elapsedTime = 0;
+        Color tempColor = fadeImage.color;
+
+        // --- ส่วนการ Lerp Fade Out (ค่อยๆ ดำ) ---
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            // ปรับเฉพาะค่า Alpha (a) จาก 0 ไป 1
+            tempColor.a = Mathf.Lerp(0, 1, elapsedTime / fadeDuration);
+            fadeImage.color = tempColor;
+            yield return null;
+        }
+
+        tempColor.a = 1;
+        fadeImage.color = tempColor;
+
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(nextSceneName);
     }
 }
