@@ -5,22 +5,19 @@ public class CollectibleItem : MonoBehaviour
 {
     public enum ItemType { Wood, Rope }
     public ItemType type;
-    private bool isPlayerNearby = false;
+    private bool isPlayerNearbyItem = false;
 
-    private void OnTriggerEnter2D(Collider2D other) { if (other.CompareTag("Player")) isPlayerNearby = true; }
-    private void OnTriggerExit2D(Collider2D other) { if (other.CompareTag("Player")) isPlayerNearby = false; }
+    private void OnTriggerEnter2D(Collider2D other) { if (other.CompareTag("Player")) isPlayerNearbyItem = true; }
+    private void OnTriggerExit2D(Collider2D other) { if (other.CompareTag("Player")) isPlayerNearbyItem = false; }
 
     private void Update()
     {
-        if (Keyboard.current == null) return;
-
-        if (isPlayerNearby && Keyboard.current.eKey.wasPressedThisFrame)
+        if (isPlayerNearbyItem && Keyboard.current.eKey.wasPressedThisFrame)
         {
             QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
             if (qm != null && qm.questPhase == 1)
             {
-                if (type == ItemType.Wood) qm.woodCount++;
-                else qm.ropeCount++;
+                if (type == ItemType.Wood) qm.woodCount++; else qm.ropeCount++;
                 Destroy(gameObject);
             }
         }
