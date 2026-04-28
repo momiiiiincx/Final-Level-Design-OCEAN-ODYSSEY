@@ -1,49 +1,94 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem; // จำเป็นสำหรับ Unity 6 / New Input System
+using UnityEngine.InputSystem;
+using TMPro;
+using System.Collections;
 
 public class BoatTrigger : MonoBehaviour
 {
-    private bool isPlayerAtBoat = false;
+    [Header("UI References")]
+    public GameObject interactionPrompt;
+    public GameObject dialoguePanel;
+    public TextMeshProUGUI dialogueText;
 
-    // เช็กว่าผู้เล่นเดินเข้ามาที่เรือหรือยัง (2D)
+    [Header("Settings")]
+    public float typingSpeed = 0.05f;
+
+    private bool isPlayerAtBoat = false;
+    private bool isMessageShown = false;
+
+    void Start()
+    {
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerAtBoat = true;
-            Debug.Log("<color=cyan>[Boat]</color> อยู่ที่เรือแล้ว (กด E เพื่อออกเรือ)");
+            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            if (qm != null && qm.questPhase == 3 && !isMessageShown)
+                if (interactionPrompt != null) interactionPrompt.SetActive(true);
         }
     }
 
-    // เช็กว่าผู้เล่นเดินออกจากเรือ
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerAtBoat = false;
+            if (interactionPrompt != null) interactionPrompt.SetActive(false);
         }
     }
 
-    private void Update()
+    void Update()
     {
-        // เงื่อนไข: ต้องอยู่ใกล้เรือ + กด E + ต้องอยู่ใน Phase 3 (คุยกับช่างซ่อมเรือเสร็จแล้ว)
+        if (Keyboard.current == null) return;
+
         if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            Debug.Log("กด E ที่เรือแล้ว!"); // เช็คว่าปุ่มทำงานไหม
 
-            if (qm != null)
+            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            if (qm == null)
             {
-                if (qm.questPhase == 3)
+                Debug.LogError("หา QuestManager ไม่เจอในฉาก!");
+                return;
+            }
+
+            Debug.Log("ปัจจุบันอยู่ใน Phase: " + qm.questPhase); // เช็คว่า Phase ตรงไหม
+
+            if (qm.questPhase == 3 && !isMessageShown)
+            {
+                if (dialoguePanel != null && dialogueText != null)
                 {
+                    ShowDialogue();
                     qm.questFinished = true;
-                    Debug.Log("<color=yellow>★★ QUEST COMPLETE! ★★</color>");
-                    // คุณสามารถใส่โค้ดเปลี่ยนฉาก เช่น SceneManager.LoadScene("Ending"); ตรงนี้ได้เลย
                 }
                 else
                 {
-                    Debug.Log("<color=red>[Boat]</color> เรือยังซ่อมไม่เสร็จ หรือเจ้ายังไม่มีภารกิจนี้!");
+                    Debug.LogError("ลืมลาก DialoguePanel หรือ Text ใส่ในสคริปต์ที่ตัวเรือครับ!");
                 }
             }
+        }
+    }
+
+    void ShowDialogue()
+    {
+        isMessageShown = true;
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+        StartCoroutine(TypeFinalMessage("This war negotiation will face many obstacles. I wish Leon a safe journey."));
+    }
+
+    IEnumerator TypeFinalMessage(string line)
+    {
+        dialogueText.text = "";
+        foreach (char letter in line.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
         }
     }
 }
