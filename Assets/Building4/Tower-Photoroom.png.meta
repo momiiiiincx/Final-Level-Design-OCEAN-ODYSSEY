@@ -1,19 +1,22 @@
 fileFormatVersion: 2
-guid: 3455c72148624684f946d425b32284f5
+guid: 358e4f7c79a03d24599967e2e98ed73f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -579342329213796395
-    second: Barrack-Photoroom_0
+      213: -3132370050233389885
+    second: Tower-Photoroom_0
   - first:
-      213: -5523268248745364841
-    second: Barrack-Photoroom_1
+      213: 4620560278343914527
+    second: Tower-Photoroom_1
   - first:
-      213: -6489083429713057136
-    second: Barrack-Photoroom_2
+      213: 5464582283973608034
+    second: Tower-Photoroom_2
   - first:
-      213: -2588122353898848364
-    second: Barrack-Photoroom_3
+      213: -6295151026601452641
+    second: Tower-Photoroom_3
+  - first:
+      213: 7948433203909096211
+    second: Tower-Photoroom_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -109,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Barrack-Photoroom_0
+      name: Tower-Photoroom_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 661
-        width: 574
-        height: 593
+        y: 653
+        width: 529
+        height: 601
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +127,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5df3dd79833c5f7f0800000000000000
-      internalID: -579342329213796395
+      spriteID: 3cc24ca09069784d0800000000000000
+      internalID: -3132370050233389885
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrack-Photoroom_1
+      name: Tower-Photoroom_1
       rect:
         serializedVersion: 2
-        x: 689
-        y: 662
-        width: 565
-        height: 592
+        x: 721
+        y: 654
+        width: 533
+        height: 600
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,20 +149,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 792b6529ac86953b0800000000000000
-      internalID: -5523268248745364841
+      spriteID: f1418f5a7178f1040800000000000000
+      internalID: 4620560278343914527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrack-Photoroom_2
+      name: Tower-Photoroom_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 560
-        height: 562
+        width: 514
+        height: 610
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 09a6416500522f5a0800000000000000
-      internalID: -6489083429713057136
+      spriteID: 262c32a72a816db40800000000000000
+      internalID: 5464582283973608034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barrack-Photoroom_3
+      name: Tower-Photoroom_3
       rect:
         serializedVersion: 2
-        x: 691
-        y: 109
-        width: 469
-        height: 454
+        x: 493
+        y: 124
+        width: 32
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,8 +193,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 49f7c9c7e64251cd0800000000000000
-      internalID: -2588122353898848364
+      spriteID: f9b1cf39e7123a8a0800000000000000
+      internalID: -6295151026601452641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tower-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 0
+        width: 550
+        height: 611
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 313fbe7e2e18e4e60800000000000000
+      internalID: 7948433203909096211
       vertices: []
       indices: 
       edges: []
@@ -210,10 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Barrack-Photoroom_0: -579342329213796395
-      Barrack-Photoroom_1: -5523268248745364841
-      Barrack-Photoroom_2: -6489083429713057136
-      Barrack-Photoroom_3: -2588122353898848364
+      Tower-Photoroom_0: -3132370050233389885
+      Tower-Photoroom_1: 4620560278343914527
+      Tower-Photoroom_2: 5464582283973608034
+      Tower-Photoroom_3: -6295151026601452641
+      Tower-Photoroom_4: 7948433203909096211
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
