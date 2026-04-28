@@ -47,6 +47,9 @@ TagManager:
   - name: G
     uniqueID: 2759885367
     locked: 0
+  - name: s
+    uniqueID: 4242060925
+    locked: 0
   - name: PL
     uniqueID: 1148713367
     locked: 0
