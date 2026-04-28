@@ -12,10 +12,17 @@ public class BoatController : MonoBehaviour
     private float currentSpeed;
     private Rigidbody2D rb;
     private Vector2 movement;
+    
+    // เพิ่มตัวแปรอ้างอิงถึง SpriteRenderer
+    private SpriteRenderer boatSprite;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
+        // ดึง Component SpriteRenderer ที่อยู่บนตัวเรือมาใช้งาน
+        boatSprite = GetComponent<SpriteRenderer>();
+        
         currentSpeed = normalSpeed; 
     }
 
@@ -23,6 +30,21 @@ public class BoatController : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        // --- ส่วนจัดการการหันหน้าของสไปรต์ ---
+        if (boatSprite != null)
+        {
+            // ถ้าค่าแกน x มากกว่า 0 (กดเดินขวา) ให้แสดงภาพปกติ
+            if (movement.x > 0) 
+            {
+                boatSprite.flipX = false; 
+            }
+            // ถ้าค่าแกน x น้อยกว่า 0 (กดเดินซ้าย) ให้กลับด้านภาพ
+            else if (movement.x < 0) 
+            {
+                boatSprite.flipX = true;  
+            }
+        }
     }
 
     void FixedUpdate()
