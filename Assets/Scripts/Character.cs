@@ -6,14 +6,19 @@ public class Character : MonoBehaviour
     
     private float currentMovementSpeed;
     private SpriteRenderer playerSprite;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
+    // 1. เพิ่มตัวแปร Animator
+    private Animator anim; 
+
     void Start()
     {
         currentMovementSpeed = baseMovementSpeed;
         playerSprite = GetComponent<SpriteRenderer>();
+        
+        // 2. ดึง Animator Component มาใช้งาน
+        anim = GetComponent<Animator>(); 
     }
 
-    // Update is called once per frame
     void Update()
     {
         Move();
@@ -21,8 +26,8 @@ public class Character : MonoBehaviour
     
     void Move()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
         
         if (playerSprite != null)
         {
@@ -38,5 +43,15 @@ public class Character : MonoBehaviour
 
         Vector2 movement = new Vector2(moveX, moveY).normalized;
         transform.Translate(movement * currentMovementSpeed * Time.deltaTime);
+
+        // 3. ส่วนนี้คือหัวใจสำคัญที่ทำให้ Animation ทำงาน!
+        if (anim != null)
+        {
+            // ถ้ามีการกดปุ่มเดิน (moveX หรือ moveY ไม่เท่ากับ 0) isMoving จะเป็น true
+            bool isMoving = (moveX != 0 || moveY != 0);
+            
+            // ส่งค่า true/false ไปให้ parameter ที่ชื่อ "isWalking" ใน Animator
+            anim.SetBool("IsWalking", isMoving);
+        }
     }
 }
