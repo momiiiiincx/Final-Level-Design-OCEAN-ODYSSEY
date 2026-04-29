@@ -12,15 +12,14 @@ public class DialogueTrigger : MonoBehaviour
     public string[] messagesPhaseInProgress;
     public string[] messagesPhaseComplete;
     public string[] messagesNextPhase;
-    private string[] messages;
+
+    [HideInInspector] public string[] messages;
 
     [Header("UI References")]
     public TextMeshProUGUI dialogueUI;
     public GameObject visualPanel;
-    public GameObject interactionPrompt; // <-- เพิ่มช่องใส่รูปปุ่ม "T" ตรงนี้
 
     [Header("Settings")]
-    public float typingSpeed = 0.04f;
     public float fadeDuration = 0.5f;
     public UnityEvent onDialogueComplete;
 
@@ -28,23 +27,19 @@ public class DialogueTrigger : MonoBehaviour
     private bool isPlayerInside = false;
     private bool isDialogueActive = false;
     private int currentMessageIndex = 0;
-    private Coroutine typingCoroutine;
 
-    void Start()
+    private void Start()
     {
         if (visualPanel != null)
         {
             panelImage = visualPanel.GetComponent<Image>();
             visualPanel.SetActive(false);
         }
-
-        // เริ่มเกมให้ปิดปุ่มบอกใบ้ไว้ก่อน
-        if (interactionPrompt != null) interactionPrompt.SetActive(false);
-
         SetAlpha(0);
+        dialogueUI.text = "";
     }
 
-    void Update()
+    private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.tKey.wasPressedThisFrame && isPlayerInside)
         {
@@ -53,92 +48,74 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    void StartDialogue()
+    private void StartDialogue()
     {
         QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
-        if (qm == null) return;
-
-        if (qm.questPhase == 0) messages = messagesDefault;
-        else if (qm.questPhase == 1) messages = (qm.woodCount >= 3 && qm.ropeCount >= 3) ? messagesPhaseComplete : messagesPhaseInProgress;
-        else if (qm.questPhase == 2) messages = (qm.foundMechanic) ? messagesPhaseComplete : messagesPhaseInProgress;
-        else messages = messagesNextPhase;
-
-        if (messages == null || messages.Length == 0) return;
-
-        // เมื่อเริ่มคุย ให้ปิดปุ่มบอกใบ้ (Interaction Prompt)
-        if (interactionPrompt != null) interactionPrompt.SetActive(false);
-
+        if (qm != null)
+        {
+            if (qm.questPhase == 0) messages = messagesDefault;
+            else if (qm.questPhase == 1) messages = (qm.woodCount >= 1 && qm.ropeCount >= 1) ? messagesPhaseComplete : messagesPhaseInProgress;
+            else if (qm.questPhase == 2) messages = (qm.foundMechanic) ? messagesPhaseComplete : messagesPhaseInProgress;
+            else messages = messagesNextPhase;
+        }
         isDialogueActive = true;
         currentMessageIndex = 0;
         ShowDialogue();
     }
 
-    void NextMessage()
+    private void NextMessage()
     {
         currentMessageIndex++;
-        if (currentMessageIndex < messages.Length)
-        {
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex]));
-        }
+        if (currentMessageIndex < messages.Length) dialogueUI.text = messages[currentMessageIndex];
         else CompleteDialogue();
     }
 
-    void CompleteDialogue()
+    private void CompleteDialogue()
     {
         HideDialogue();
         isDialogueActive = false;
 
-        // เมื่อคุยจบ ถ้าผู้เล่นยังอยู่ใน Collider ให้เปิดปุ่มบอกใบ้คืนมา
-        if (isPlayerInside && interactionPrompt != null) interactionPrompt.SetActive(true);
-
         QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
         if (qm != null)
         {
-            if (qm.questPhase == 0) qm.StartPhase1();
-            else if (qm.questPhase == 1 && qm.woodCount >= 3 && qm.ropeCount >= 3) qm.StartPhase2();
-            else if (qm.questPhase == 2 && qm.foundMechanic) qm.StartPhase3();
+            // --- ส่วนของพระราชา ---
+            // ถ้ายังไม่ได้เริ่มเควสเลย (Phase 0) ให้รัน StartPhase1
+            if (qm.questPhase == 0)
+            {
+                qm.StartPhase1();
+                Debug.Log("เริ่มเควสเก็บของ (Phase 1)");
+            }
+            // ถ้าอยู่ Phase 1 และเก็บของครบแล้ว ให้รัน StartPhase2 (ไปหาช่าง)
+            else if (qm.questPhase == 1 && qm.woodCount >= 1 && qm.ropeCount >= 1)
+            {
+                qm.StartPhase2();
+                Debug.Log("ผ่านเควสเก็บของ -> ไปหาช่างเรือ (Phase 2)");
+            }
+
+            // --- ส่วนของช่างเรือ ---
+            // ถ้าคุยกับช่างเรือในขณะที่อยู่ Phase 2 (ตามหาคน) และเจอตัวช่างแล้ว
+            else if (qm.questPhase == 2 && qm.foundMechanic)
+            {
+                qm.StartPhase3(); // สั่งเปลี่ยนเป็น Phase 3 (ไปที่เรือ)
+                Debug.Log("เปลี่ยนเป็น Phase 3: ไปที่เรือได้เลย!");
+            }
+
+            // รัน Event อื่นๆ ที่ตั้งไว้ใน Inspector (ถ้ามี)
             onDialogueComplete.Invoke();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInside = true;
-            // เมื่อเดินเข้าใกล้ และยังไม่ได้คุย ให้โชว์ปุ่มบอกใบ้
-            if (!isDialogueActive && interactionPrompt != null) interactionPrompt.SetActive(true);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInside = false;
-            // เมื่อเดินออก ให้ปิดทั้งปุ่มบอกใบ้และบทสนทนา
-            if (interactionPrompt != null) interactionPrompt.SetActive(false);
-            HideDialogue();
-            isDialogueActive = false;
-        }
-    }
+    private void OnTriggerEnter2D(Collider2D other) { if (other.CompareTag("Player")) isPlayerInside = true; }
+    private void OnTriggerExit2D(Collider2D other) { if (other.CompareTag("Player")) { isPlayerInside = false; HideDialogue(); isDialogueActive = false; } }
 
     void ShowDialogue()
     {
-        visualPanel.SetActive(true);
-        StopAllCoroutines();
-        StartCoroutine(FadeProcess(1f));
-        typingCoroutine = StartCoroutine(TypeText(messages[0]));
-    }
-
-    IEnumerator TypeText(string line)
-    {
-        dialogueUI.text = "";
-        foreach (char letter in line.ToCharArray())
+        if (messages.Length > 0 && dialogueUI != null)
         {
-            dialogueUI.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            dialogueUI.text = messages[0];
+            if (visualPanel != null) visualPanel.SetActive(true);
+            StopAllCoroutines();
+            StartCoroutine(FadeProcess(1f));
         }
     }
 
@@ -147,15 +124,18 @@ public class DialogueTrigger : MonoBehaviour
     IEnumerator FadeProcess(float targetAlpha, bool disableAfter = false)
     {
         float currentTime = 0;
-        float startAlpha = dialogueUI.color.a;
+        Color pColor = (panelImage != null) ? panelImage.color : Color.clear;
+        Color tColor = dialogueUI.color;
+        float startAlpha = tColor.a;
         while (currentTime < fadeDuration)
         {
             currentTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, targetAlpha, currentTime / fadeDuration);
-            SetAlpha(alpha);
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, currentTime / fadeDuration);
+            if (panelImage != null) panelImage.color = new Color(pColor.r, pColor.g, pColor.b, newAlpha);
+            dialogueUI.color = new Color(tColor.r, tColor.g, tColor.b, newAlpha);
             yield return null;
         }
-        if (disableAfter && targetAlpha == 0) { visualPanel.SetActive(false); dialogueUI.text = ""; }
+        if (disableAfter && targetAlpha == 0) { if (visualPanel != null) visualPanel.SetActive(false); dialogueUI.text = ""; }
     }
 
     void SetAlpha(float alpha)
