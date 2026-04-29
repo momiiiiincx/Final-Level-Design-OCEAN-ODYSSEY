@@ -1,0 +1,85 @@
+{
+    "version": 1,
+    "name": "IS_BoatController",
+    "maps": [
+        {
+            "name": "Player_BoatController",
+            "id": "287cc3eb-0e57-498a-86a7-bcdc55670911",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "091ff29e-1e37-457f-8d41-f6ea84bdac63",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "0790ac98-5b2e-4615-bca5-2b9b62df7633",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "bbca129f-c09b-437a-9056-6d65ae9445ce",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ed80a9f7-7fd8-47b5-9f93-873025979bbe",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "601e37e9-15b1-42ce-a852-d24541a29f86",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "98173b06-3b4f-4b88-812d-3b656b6fbc40",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "UI_BoatController",
+            "id": "2929c517-5ddd-4054-8db9-3183e6d10769",
+            "actions": [],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}
