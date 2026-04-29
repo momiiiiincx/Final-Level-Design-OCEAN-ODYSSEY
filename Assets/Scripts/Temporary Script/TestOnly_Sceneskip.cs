@@ -1,8 +1,18 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 public class TestOnly_Sceneskip : MonoBehaviour
 {
+    private void OnValidate()
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        if (col == null)
+        {
+            // กรณีที่ใช้  BoxCollider2D ถ้าจะใช้ collider อื่นๆ ก็ต้องเปลี่ยนใน Inspector
+            col = gameObject.AddComponent<BoxCollider2D>();
+        }
+        col.isTrigger = true;
+    }
+
     [SerializeField] private string nextSceneName = "NextScene";
 
     [ContextMenu("Skip Scene")]

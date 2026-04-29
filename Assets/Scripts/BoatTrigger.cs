@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem; // จำเป็นสำหรับ Unity 6 / New Input System
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI; // จำเป็นสำหรับ Unity 6 / New Input System
 
 public class BoatTrigger : MonoBehaviour
 {
-<<<<<<< Updated upstream
     [Header("UI References")]
     public GameObject interactionPrompt;
     public GameObject dialoguePanel;
@@ -17,8 +18,6 @@ public class BoatTrigger : MonoBehaviour
     [Header("Settings")]
     public float typingSpeed = 0.05f;
 
-=======
->>>>>>> Stashed changes
     private bool isPlayerAtBoat = false;
 
     // เช็กว่าผู้เล่นเดินเข้ามาที่เรือหรือยัง (2D)
@@ -45,7 +44,7 @@ public class BoatTrigger : MonoBehaviour
         // เงื่อนไข: ต้องอยู่ใกล้เรือ + กด E + ต้องอยู่ใน Phase 3 (คุยกับช่างซ่อมเรือเสร็จแล้ว)
         if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            QuestManager qm = Object.FindAnyObjectByType<QuestManager>();
 
             if (qm != null)
             {
