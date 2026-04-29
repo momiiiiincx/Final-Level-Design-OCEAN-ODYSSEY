@@ -36,7 +36,7 @@ public class OctopusAI : MonoBehaviour
         if (other.CompareTag("Sand"))
         {
             isChasing = false;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             Debug.Log("หมึกว่ายมาเกยตื้นเองแล้ว!");
         }
         else if (other.CompareTag("Player"))

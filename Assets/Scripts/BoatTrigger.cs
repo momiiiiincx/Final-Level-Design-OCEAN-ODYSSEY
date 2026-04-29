@@ -15,7 +15,7 @@ public class BoatTrigger : MonoBehaviour
     [Header("Fade Settings")]
     public Image fadeImage; // เปลี่ยนจาก CanvasGroup เป็น Image
     public float fadeDuration = 1.5f;
-    public string nextSceneName = "NextSceneName";
+    public string nextSceneName = "Level2";
 
     [Header("Settings")]
     public float typingSpeed = 0.05f;
