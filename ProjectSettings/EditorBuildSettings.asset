@@ -26,6 +26,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/underwater.unity
     guid: 309281c06a47e4f449dbcbff59a3707b
+  - enabled: 1
+    path: Assets/Scenes/level7.unity
+    guid: ae6dfac36422b4ecea846f6a13cc0732
+  - enabled: 1
+    path: Assets/Scenes/Level8-GhostShip.unity
+    guid: 7173197946ee9844dabfafabbee8a758
+  - enabled: 1
+    path: Assets/Scenes/LastLevel-End.unity
+    guid: 4c3a8297dd218df45b8f2752f4d7d7e1
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 52e59b16c2124e34bb31f700317c4855,
       type: 2}
