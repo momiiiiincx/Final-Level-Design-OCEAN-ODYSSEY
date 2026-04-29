@@ -58,30 +58,31 @@ public class WaveSystem : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col == null) return;
 
-        Gizmos.color = new Color(0f, 0.5f, 1f, 0.2f);
-        Gizmos.DrawCube(col.bounds.center, col.bounds.size);
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+        if (col is BoxCollider2D box)
+        {
+            Gizmos.color = new Color(0f, 0.5f, 1f, 0.3f);
+            Gizmos.DrawCube(box.offset, box.size);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireCube(box.offset, box.size);
+            Gizmos.color = new Color(0f, 1f, 1f, 0.2f);
+            Gizmos.DrawLine(box.offset - box.size / 2, box.offset + box.size / 2);
+            Gizmos.DrawLine(box.offset + new Vector2(-box.size.x, box.size.y) / 2, box.offset + new Vector2(box.size.x, -box.size.y) / 2);
+        }
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
-
-        // Use local size so extents stay consistent regardless of Z rotation
-        float halfW = col is BoxCollider2D box ? box.size.x * 0.5f : col.bounds.extents.x;
-        float halfH = col is BoxCollider2D box2 ? box2.size.y * 0.5f : col.bounds.extents.y;
-
+        Gizmos.matrix = Matrix4x4.identity;
         Vector3 center = col.bounds.center;
+
+        float arrowLength = Mathf.Max(2f, Mathf.Abs(waveForce) * 0.1f);
+        Vector3 upDir = transform.up * Mathf.Sign(waveForce >= 0 ? 1 : -1);
+        Vector3 endPoint = center + upDir * arrowLength;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(center, endPoint);
+
+        float arrowSize = 1f;
         Vector3 right = transform.right;
-        Vector3 up = transform.up;
-
-        // Horizontal line across the wave surface (perpendicular to force)
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(center - right * halfW, center + right * halfW);
-
-        // Arrow shaft + head pointing in wave force direction (transform.up)
-        Vector3 arrowTip = center + up * halfH;
-        Gizmos.DrawLine(center, arrowTip);
-
-        float arrowSize = Mathf.Min(0.5f, halfH * 0.3f);
-        Gizmos.DrawLine(arrowTip, arrowTip + (-up + right) * arrowSize);
-        Gizmos.DrawLine(arrowTip, arrowTip + (-up - right) * arrowSize);
+        Gizmos.DrawLine(endPoint, endPoint - upDir * arrowSize + right * arrowSize);
+        Gizmos.DrawLine(endPoint, endPoint - upDir * arrowSize - right * arrowSize);
     }
 }
