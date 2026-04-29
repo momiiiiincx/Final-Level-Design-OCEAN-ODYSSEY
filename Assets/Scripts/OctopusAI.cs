@@ -8,6 +8,9 @@ public class OctopusAI : MonoBehaviour
     public float chaseSpeed = 4f;     
     private bool isChasing = true;    
 
+    [Header("การเปลี่ยน Scene")]
+    public string retrySceneName = "RetryScene"; // เพิ่มตัวแปรนี้สำหรับใส่ชื่อ Scene ตอนแพ้
+
     private Transform boatTransform;
     private Rigidbody2D rb;
 
@@ -38,14 +41,10 @@ public class OctopusAI : MonoBehaviour
         }
         else if (other.CompareTag("Player"))
         {
-            Debug.Log("💀 โดนปลาหมึกจับได้! Game Over!");
+            Debug.Log("💀 โดนปลาหมึกจับได้! เด้งไปหน้า Game Over!");
 
-            // โค้ดส่วน Game Over ที่นำมาใส่เพิ่ม
-            // ทำการโหลดซีนปัจจุบันใหม่ (เริ่มด่านใหม่) ทันทีที่โดนเรือ
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            
-            // หากต้องการให้โหลดไปหน้า Game Over แทนการเริ่มใหม่ ให้เปลี่ยนเป็น:
-            // SceneManager.LoadScene("ชื่อซีนGameOverของคุณ");
+            // สั่งเปลี่ยนไปหน้าแพ้ (Retry) ตามชื่อ Scene ที่ตั้งไว้
+            SceneManager.LoadScene(retrySceneName);
         }
     }
 }

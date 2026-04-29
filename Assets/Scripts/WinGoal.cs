@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement; // ต้องใช้ตัวนี้ส
 public class WinGoal : MonoBehaviour
 {
     // ตั้งชื่อซีนที่คุณต้องการให้โหลดเมื่อชนะ เช่น "WinScene"
-    //public string nextSceneName = "WinScene"; 
+    public string nextSceneName = "WinScene"; 
 
     private void OnTriggerEnter2D(Collider2D other)
     {

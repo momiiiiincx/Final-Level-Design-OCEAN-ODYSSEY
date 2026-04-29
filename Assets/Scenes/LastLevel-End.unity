@@ -21634,6 +21634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefe8e124be7f0844b686b10ceac6142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WinGoal
+  nextSceneName: '-'
 --- !u!1 &1867152923
 GameObject:
   m_ObjectHideFlags: 0

@@ -5613,6 +5613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   timeToWin: 180
+  winSceneName: '-'
+  retrySceneName: '-'
 --- !u!4 &1094484827
 Transform:
   m_ObjectHideFlags: 0
