@@ -1,7 +1,9 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; // จำเป็นสำหรับ Unity 6 / New Input System
+using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; // ต้องมีตัวนี้เพื่อใช้ Image
 
 public class BoatTrigger : MonoBehaviour
 {
@@ -13,52 +15,114 @@ public class BoatTrigger : MonoBehaviour
     [Header("Fade Settings")]
     public Image fadeImage; // เปลี่ยนจาก CanvasGroup เป็น Image
     public float fadeDuration = 1.5f;
-    public string nextSceneName = "Level2";
+    public string nextSceneName = "NextSceneName";
 
     [Header("Settings")]
     public float typingSpeed = 0.05f;
 
     private bool isPlayerAtBoat = false;
+    private bool isMessageShown = false;
 
-    // เช็กว่าผู้เล่นเดินเข้ามาที่เรือหรือยัง (2D)
+    void Start()
+    {
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.SetActive(false);
+
+        // เริ่มต้นให้ Image สีดำโปร่งแสง (Alpha = 0)
+        if (fadeImage != null)
+        {
+            Color c = fadeImage.color;
+            c.a = 0;
+            fadeImage.color = c;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerAtBoat = true;
-            Debug.Log("<color=cyan>[Boat]</color> อยู่ที่เรือแล้ว (กด E เพื่อออกเรือ)");
+            QuestManager qm = Object.FindAnyObjectByType<QuestManager>();
+            if (qm != null && qm.questPhase == 3 && !isMessageShown)
+            {
+                if (interactionPrompt != null) interactionPrompt.SetActive(true);
+            }
         }
     }
 
-    // เช็กว่าผู้เล่นเดินออกจากเรือ
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerAtBoat = false;
+            if (interactionPrompt != null) interactionPrompt.SetActive(false);
         }
     }
 
-    private void Update()
+    void Update()
     {
-        // เงื่อนไข: ต้องอยู่ใกล้เรือ + กด E + ต้องอยู่ใน Phase 3 (คุยกับช่างซ่อมเรือเสร็จแล้ว)
-        if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            QuestManager qm = Object.FindAnyObjectByType<QuestManager>();
+        if (Keyboard.current == null) return;
 
-            if (qm != null)
+        if (isPlayerAtBoat && Keyboard.current.eKey.wasPressedThisFrame && !isMessageShown)
+        {
+            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            if (qm != null && qm.questPhase == 3)
             {
-                if (qm.questPhase == 3)
+                if (dialoguePanel != null && dialogueText != null)
                 {
+                    ShowDialogue();
                     qm.questFinished = true;
-                    Debug.Log("<color=yellow>★★ QUEST COMPLETE! ★★</color>");
-                    // คุณสามารถใส่โค้ดเปลี่ยนฉาก เช่น SceneManager.LoadScene("Ending"); ตรงนี้ได้เลย
-                }
-                else
-                {
-                    Debug.Log("<color=red>[Boat]</color> เรือยังซ่อมไม่เสร็จ หรือเจ้ายังไม่มีภารกิจนี้!");
                 }
             }
         }
+    }
+
+    void ShowDialogue()
+    {
+        isMessageShown = true;
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+        StartCoroutine(TypeFinalMessage("This war negotiation will face many obstacles. I wish Leon a safe journey."));
+    }
+
+    IEnumerator TypeFinalMessage(string line)
+    {
+        dialogueText.text = "";
+        foreach (char letter in line.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(FadeAndChangeScene());
+    }
+
+    IEnumerator FadeAndChangeScene()
+    {
+        if (fadeImage == null)
+        {
+            Debug.LogError("ลืมลาก Image สีดำมาใส่ในช่อง Fade Image นะครับ!");
+            yield break;
+        }
+
+        float elapsedTime = 0;
+        Color tempColor = fadeImage.color;
+
+        // --- ส่วนการ Lerp Fade Out (ค่อยๆ ดำ) ---
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            // ปรับเฉพาะค่า Alpha (a) จาก 0 ไป 1
+            tempColor.a = Mathf.Lerp(0, 1, elapsedTime / fadeDuration);
+            fadeImage.color = tempColor;
+            yield return null;
+        }
+
+        tempColor.a = 1;
+        fadeImage.color = tempColor;
+
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(nextSceneName);
     }
 }
