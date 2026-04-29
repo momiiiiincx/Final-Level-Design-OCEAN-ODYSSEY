@@ -12,6 +12,7 @@ public class BoatController : MonoBehaviour
     [Space(10)]
     [Header("references")]
     [SerializeField] private Transform _boatTransform;
+    [SerializeField] private Rigidbody2D _rb2d;
 
     [Header("Sprite Renderers")] // TODO: อย่าหาแก้ ถ้าจะทำ animation ให้ทำเป็น animator แทน
     [SerializeField] private SpriteRenderer _boatRenderer;
@@ -27,7 +28,7 @@ public class BoatController : MonoBehaviour
     public void OnMovement(InputValue value) => _moveInput = value.Get<Vector2>();
     public void SetMovement(Vector2 input) => _moveInput = input;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 move = _moveInput;
         if (move.sqrMagnitude < MOVE_THRESHOLD)
@@ -37,11 +38,13 @@ public class BoatController : MonoBehaviour
 
         if (move.sqrMagnitude > MOVE_THRESHOLD)
         {
-            Vector3 displacement = new Vector3(move.x, move.y, 0f) * _speed * Time.deltaTime;
+            if (_rb2d != null)
+            {
+                _rb2d.linearVelocity = move.normalized * _speed;
+            }
+
             if (_boatTransform != null)
             {
-                _boatTransform.position += displacement;
-
                 if (_boatRenderer != null)
                 {
                     if (Mathf.Abs(move.x) > MOVE_THRESHOLD)
@@ -73,6 +76,11 @@ public class BoatController : MonoBehaviour
         }
         else
         {
+            if (_rb2d != null)
+            {
+                _rb2d.linearVelocity = Vector2.zero;
+            }
+
             if (_boatRenderer != null && _idleSprite != null)
                 _boatRenderer.sprite = _idleSprite;
         }
