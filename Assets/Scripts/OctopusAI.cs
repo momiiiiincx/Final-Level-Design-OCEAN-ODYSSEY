@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // สำคัญ: ต้องใส่บรรทัดนี้เพื่อใช้งานคำสั่งโหลดซีน
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class OctopusAI : MonoBehaviour
@@ -37,7 +38,14 @@ public class OctopusAI : MonoBehaviour
         }
         else if (other.CompareTag("Player"))
         {
-            Debug.Log("💀 โดนปลาหมึกจับได้!");
+            Debug.Log("💀 โดนปลาหมึกจับได้! Game Over!");
+
+            // โค้ดส่วน Game Over ที่นำมาใส่เพิ่ม
+            // ทำการโหลดซีนปัจจุบันใหม่ (เริ่มด่านใหม่) ทันทีที่โดนเรือ
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+            // หากต้องการให้โหลดไปหน้า Game Over แทนการเริ่มใหม่ ให้เปลี่ยนเป็น:
+            // SceneManager.LoadScene("ชื่อซีนGameOverของคุณ");
         }
     }
 }
