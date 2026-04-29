@@ -11,7 +11,7 @@ public class EnterNextLevel : MonoBehaviour
     [Header("Fade Settings")]
     public Image fadeImage;
     public float fadeDuration = 1.5f;
-    public string nextSceneName = "Mos";
+    public string nextSceneName = "LevelName Here";
 
     private bool isFading = false;
 
@@ -21,17 +21,7 @@ public class EnterNextLevel : MonoBehaviour
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
-            {
                 boatController = player.GetComponent<BoatController>();
-                if (boatController == null)
-                {
-                    Debug.LogWarning("[EnterNextLevel] BoatController component not found on Player.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("[EnterNextLevel] Player object with tag 'Player' not found.");
-            }
         }
 
         if (fadeImage != null)
@@ -44,10 +34,12 @@ public class EnterNextLevel : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        boatController.enabled = false;
         Debug.Log($"[EnterNextLevel] Trigger hit by: {other.name} (tag: {other.tag})");
         if (other.CompareTag("Player") && !isFading)
         {
+            if (boatController != null)
+                boatController.enabled = false;
+
             Debug.Log("[EnterNextLevel] Player detected — loading scene: " + nextSceneName);
             StartCoroutine(FadeAndChangeScene());
         }

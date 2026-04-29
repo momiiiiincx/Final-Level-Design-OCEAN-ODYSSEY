@@ -10777,13 +10777,16 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 622
+  - serializedVersion: 2
+    m_RefCount: 622
     m_Data: {fileID: 11400000, guid: 0cb67b76c732d41d7855aa3e08be4136, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 622
+  - serializedVersion: 2
+    m_RefCount: 622
     m_Data: {fileID: 1407361637, guid: 975d0180777d749ceacbb5aad1b8ebd9, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 622
+  - serializedVersion: 2
+    m_RefCount: 622
     m_Data:
       e00: 1
       e01: 0
@@ -10802,7 +10805,8 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 622
+  - serializedVersion: 2
+    m_RefCount: 622
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -11816,6 +11820,7 @@ GameObject:
   - component: {fileID: 1328598737}
   - component: {fileID: 1328598740}
   - component: {fileID: 1328598741}
+  - component: {fileID: 1328598743}
   - component: {fileID: 1328598742}
   m_Layer: 0
   m_Name: Boat
@@ -11873,8 +11878,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8172931713663011497, guid: 4a334eb6ac269834b9445a8a415cc4a9,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: a823626df4d1e4f28aa55a72e8d21071, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11973,12 +11977,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 1328598735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85cd9f3b99bbfa444afded2ead480419, type: 3}
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 39227cfdca0c64e8381a34d7e808a099,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1328598743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328598735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ea337766418451b9beafd28308be04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoatController
-  normalSpeed: 3.3
-  boostSpeed: 5
-  boostDuration: 2
+  _speed: 8
+  _boatTransform: {fileID: 1328598738}
+  _rb2d: {fileID: 1328598740}
+  _boatRenderer: {fileID: 1328598737}
+  _idleSprite: {fileID: 21300000, guid: a823626df4d1e4f28aa55a72e8d21071, type: 3}
+  _movingSprite: {fileID: 21300000, guid: cb5697c31e46d4e2da6de1af05ca28a1, type: 3}
 --- !u!1 &1361863517
 GameObject:
   m_ObjectHideFlags: 0
@@ -14593,7 +14631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OctopusAI
   chaseSpeed: 3
-  retrySceneName: '-'
+  retrySceneName: GameOver
 --- !u!50 &1778927054
 Rigidbody2D:
   serializedVersion: 5
