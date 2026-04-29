@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentAnimation != targetAnim)
         {
-            anim.Play(targetAnim);
+            anim.Play(targetAnim, 0, 0f);
             currentAnimation = targetAnim;
         }
     }

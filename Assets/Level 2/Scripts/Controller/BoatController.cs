@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class BoatController : MonoBehaviour
 {
-    // TODO: --> แก้ script ติดต่อไอเปรียว <--
-
     [Header("Control Settings")]
     // TODO: (Optional) จะเอา SerializeField ออกตอน Product หรือว่าไม่ก็ได้ (ถ้าเอาออกต้องเปลี่ยน private เป็น public ด้วย)
     [SerializeField] private float _speed;
