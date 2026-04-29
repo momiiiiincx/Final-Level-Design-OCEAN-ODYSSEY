@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class TestOnly_Sceneskip : MonoBehaviour
 {
     [SerializeField] private string nextSceneName = "NextScene";
