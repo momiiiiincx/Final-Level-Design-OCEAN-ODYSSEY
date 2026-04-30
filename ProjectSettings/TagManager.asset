@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Wood
-  - Rope
-  - Hammer
+  - Cabinet
+  - Whirlpool
+  - Sand
   layers:
   - Default
   - TransparentFX
@@ -14,6 +14,9 @@ TagManager:
   - 
   - Water
   - UI
+  - Obstacle
+  - Ghost
+  - MapBounds
   - 
   - 
   - 
@@ -25,12 +28,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Layer 1
+  - Layer 2
+  - Layer 3
   - 
   - 
   - 
@@ -44,14 +44,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: W
-    uniqueID: 657933703
+  - name: Layer 1
+    uniqueID: 2425651459
     locked: 0
-  - name: Bg
-    uniqueID: 1877889477
-    locked: 0
-  - name: G
-    uniqueID: 2759885367
+  - name: Layer 2
+    uniqueID: 4250941897
     locked: 0
   - name: s
     uniqueID: 4242060925
@@ -62,9 +59,5 @@ TagManager:
   - name: P
     uniqueID: 183491337
     locked: 0
-  - name: Sky
-    uniqueID: 866329953
-    locked: 0
   m_RenderingLayers:
   - Default
-  m_MigratedRenderPipelines: []
