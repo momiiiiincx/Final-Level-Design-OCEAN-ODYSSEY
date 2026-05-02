@@ -18,5 +18,9 @@ public class PlayerController : MonoBehaviour
         // หมุนเรือ
         transform.Rotate(Vector3.forward * -rotate * rotationSpeed * Time.deltaTime);
     }
+
+    public Vector2 moveDirection { get; private set; }
+
 }
+
 

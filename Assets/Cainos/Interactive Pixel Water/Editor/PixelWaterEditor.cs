@@ -50,7 +50,7 @@ namespace Cainos.InteractivePixelWater
 
             //bottom left handle
             EditorGUI.BeginChangeCheck();
-            var fmh_53_66_639118603985277042 = Quaternion.identity; Vector3 newBL = Handles.FreeMoveHandle(handlePos[0], handleSize, snap, Handles.CubeHandleCap);
+            Vector3 newBL = Handles.FreeMoveHandle(handlePos[0], Quaternion.identity, handleSize, snap, Handles.CubeHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(water, "Resize Water");
@@ -62,7 +62,7 @@ namespace Cainos.InteractivePixelWater
 
             //bottom right handle
             EditorGUI.BeginChangeCheck();
-            var fmh_65_66_639118603985292550 = Quaternion.identity; Vector3 newBR = Handles.FreeMoveHandle(handlePos[1], handleSize, snap, Handles.CubeHandleCap);
+            Vector3 newBR = Handles.FreeMoveHandle(handlePos[1], Quaternion.identity, handleSize, snap, Handles.CubeHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(water, "Resize Water");
@@ -74,7 +74,7 @@ namespace Cainos.InteractivePixelWater
 
             //top left handle
             EditorGUI.BeginChangeCheck();
-            var fmh_77_66_639118603985296834 = Quaternion.identity; Vector3 newTL = Handles.FreeMoveHandle(handlePos[2], handleSize, snap, Handles.CubeHandleCap);
+            Vector3 newTL = Handles.FreeMoveHandle(handlePos[2], Quaternion.identity, handleSize, snap, Handles.CubeHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(water, "Resize Water");
@@ -86,7 +86,7 @@ namespace Cainos.InteractivePixelWater
 
             //top right
             EditorGUI.BeginChangeCheck();
-            var fmh_89_66_639118603985300172 = Quaternion.identity; Vector3 newTR = Handles.FreeMoveHandle(handlePos[3], handleSize, snap, Handles.CubeHandleCap);
+            Vector3 newTR = Handles.FreeMoveHandle(handlePos[3], Quaternion.identity, handleSize, snap, Handles.CubeHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(water, "Resize Water");
