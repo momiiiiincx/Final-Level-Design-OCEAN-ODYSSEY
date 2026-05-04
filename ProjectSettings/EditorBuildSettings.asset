@@ -35,5 +35,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LastLevel-End.unity
     guid: 4c3a8297dd218df45b8f2752f4d7d7e1
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: 9be1e752098582c40bc43e93f3433636
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 52e59b16c2124e34bb31f700317c4855, type: 2}
