@@ -10,6 +10,8 @@ TagManager:
   - Hammer
   - Wood
   - Rope
+  - Enemy
+  - Coral
   layers:
   - Default
   - TransparentFX
