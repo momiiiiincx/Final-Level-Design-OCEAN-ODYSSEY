@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level5-Dark Sea.unity
     guid: 3d8a44500b73b144e9734438d75a6413
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameOver.unity
     guid: 99845255049609a41a86735b6f2dde1c
   - enabled: 1
